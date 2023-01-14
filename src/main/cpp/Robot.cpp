@@ -9,10 +9,10 @@
 
 #include "ctre/Phoenix.h"
 
-TalonSRX srx = {0};
+TalonFX myFX = {0};
 
 void Robot::RobotInit() {
-    srx.Set(ControlMode::PercentOutput, 0);
+    myFX.Set(ControlMode::PercentOutput, 1);
 }
 void Robot::RobotPeriodic() {}
 
