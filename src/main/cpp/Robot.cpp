@@ -9,10 +9,12 @@
 
 #include "ctre/Phoenix.h"
 
-TalonFX myFX = {0};
+TalonFX BackRightDrive = {4};
+TalonFX BackRightSteering = {8};
+
 
 void Robot::RobotInit() {
-    myFX.Set(ControlMode::PercentOutput, 1);
+    BackRightDrive.Set(ControlMode::PercentOutput, 1);
 }
 void Robot::RobotPeriodic() {}
 
