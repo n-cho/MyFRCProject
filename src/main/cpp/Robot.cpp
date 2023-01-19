@@ -12,11 +12,9 @@
 TalonFX BackRightDrive = {4};
 TalonFX BackRightSteering = {8};
 
-// Hello World
-
-
 void Robot::RobotInit() {
     BackRightDrive.Set(ControlMode::PercentOutput, 1);
+    
 }
 void Robot::RobotPeriodic() {}
 
