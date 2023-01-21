@@ -28,16 +28,21 @@ frc::XboxController Controller = frc::XboxController(0);
 
 const auto kControlMode = ctre::phoenix::motorcontrol::ControlMode::PercentOutput;
 
+int Math() {
+    return 1;
+}
+
+Robot::Robot() {
+    AddPeriodic([&] {
+        Math();
+    }, 10_ms, 0_ms);
+}
+
 void Robot::RobotInit() {
     
 }
 void Robot::RobotPeriodic() {
 
-
-    FrontLeftDrive.Set(kControlMode, Controller.GetLeftY());
-    FrontRightDrive.Set(kControlMode, Controller.GetLeftY());
-    BackLeftDrive.Set(kControlMode, Controller.GetLeftY());
-    BackRightDrive.Set(kControlMode, Controller.GetLeftY());
 }
 
 void Robot::AutonomousInit() {}
