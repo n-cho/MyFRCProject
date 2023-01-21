@@ -8,6 +8,7 @@
 #include "Robot.h"
 
 #include "ctre/Phoenix.h"
+#include "frc/XboxController.h"
 
 TalonFX FrontLeftDrive = 3;
 TalonFX FrontLeftSteering = 7;
@@ -18,12 +19,18 @@ TalonFX BackRightSteering = 8;
 TalonFX BackLeftDrive = 2;
 TalonFX BackLeftSteering = 6;
 
+CANCoder BackLeftCANCoder = 10;
+CANCoder BackRightCANCoder = 12;
+CANCoder FrontLeftCANCoder = 11;
+CANCoder FrontRightCANCoder = 9;
+
+frc::XboxController Controller = frc::XboxController(0);
+
 void Robot::RobotInit() {
-    
     
 }
 void Robot::RobotPeriodic() {
-
+    FrontLeftDrive.Set(ctre::phoenix::motorcontrol::ControlMode::PercentOutput, Controller.GetLeftY());
 }
 
 void Robot::AutonomousInit() {}
