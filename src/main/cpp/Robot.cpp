@@ -32,18 +32,8 @@ int Math() {
     return 1;
 }
 
-Robot::Robot() {
-    AddPeriodic([&] {
-        Math();
-    }, 10_ms, 0_ms);
-}
-
-void Robot::RobotInit() {
-    
-}
-void Robot::RobotPeriodic() {
-
-}
+void Robot::RobotInit() {}
+void Robot::RobotPeriodic() {}
 
 void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
@@ -59,6 +49,10 @@ void Robot::TestPeriodic() {}
 
 void Robot::SimulationInit() {}
 void Robot::SimulationPeriodic() {}
+
+Robot::Robot() {
+    AddPeriodic([&] { Math(); }, 10_ms, 0_ms);
+}
 
 #ifndef RUNNING_FRC_TESTS
 int main() {
