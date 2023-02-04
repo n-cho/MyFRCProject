@@ -6,6 +6,9 @@
 //
 
 #include <frc/geometry/Translation2d.h>
+#include <frc/kinematics/SwerveDriveKinematics.h>
+#include <frc/kinematics/SwerveDriveOdometry.h>
+#include <frc/kinematics/SwerveModulePosition.h>
 
 #include <Robot.h>
 #include <DeviceManager.h>
@@ -16,6 +19,23 @@ const frc::Translation2d kFrontLeftLocation{11.625_in, 7.25_in};
 const frc::Translation2d kFrontRightLocation{11.625_in, -7.25_in};
 const frc::Translation2d kBackLeftLocation{-11.625_in, 7.25_in};
 const frc::Translation2d kBackRightLocation{-11.625_in, -7.25_in};
+
+// Creating my kinematics object using the module locations.
+frc::SwerveDriveKinematics<4> kinematics{
+  kFrontLeftLocation, kFrontRightLocation,
+  kBackLeftLocation, kBackRightLocation
+};
+
+// Creating my odometry object from the kinematics object. Here,
+// our starting pose is 5 meters along the long end of the field and in the
+// center of the field along the short end, facing forward.
+// frc::SwerveDriveOdometry<4> m_odometry{
+//   kinematics,
+//   Gyro.GetRotation2d(),
+//   {FrontLeftDrive.GetPosition(), FrontRightDrive.GetPosition(),
+//   BackLeftDrive.GetPosition(), BackRightDrive.GetPosition()},
+//   frc::Pose2d{0_m, 0_m, 0_rad}
+//   };
 
 void Robot::RobotInit() {}
 
