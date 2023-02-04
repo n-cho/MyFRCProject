@@ -26,12 +26,12 @@ CANCoder FrontRightCANCoder = 9;
 
 frc::XboxController Controller = frc::XboxController(0);
 
-const auto kControlMode = ctre::phoenix::motorcontrol::ControlMode::PercentOutput;
+const auto kControlModePercentOutput = ctre::phoenix::motorcontrol::ControlMode::PercentOutput;
 
 void Robot::RobotInit() {}
 
 void Robot::RobotPeriodic() {
-    FrontLeftDrive.Set(kControlMode, Controller.GetAButton() ? 100 : 0);
+    FrontLeftDrive.Set(kControlModePercentOutput, Controller.GetAButton() ? 1 : 0);
 }
 
 void Robot::AutonomousInit() {}
