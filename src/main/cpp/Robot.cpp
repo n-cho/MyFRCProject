@@ -6,33 +6,11 @@
 //
 
 #include "Robot.h"
-
-#include "ctre/Phoenix.h"
-#include "frc/XboxController.h"
-
-TalonFX FrontLeftDrive = 3;
-TalonFX FrontLeftSteering = 7;
-TalonFX FrontRightDrive = 1;
-TalonFX FrontRightSteering = 5;
-TalonFX BackRightDrive = 4;
-TalonFX BackRightSteering = 8;
-TalonFX BackLeftDrive = 2;
-TalonFX BackLeftSteering = 6;
-
-CANCoder BackLeftCANCoder = 10;
-CANCoder BackRightCANCoder = 12;
-CANCoder FrontLeftCANCoder = 11;
-CANCoder FrontRightCANCoder = 9;
-
-frc::XboxController Controller = frc::XboxController(0);
-
-const auto kControlModePercentOutput = ctre::phoenix::motorcontrol::ControlMode::PercentOutput;
+#include "DeviceManager.h"
 
 void Robot::RobotInit() {}
 
-void Robot::RobotPeriodic() {
-    FrontLeftDrive.Set(kControlModePercentOutput, Controller.GetAButton() ? 1 : 0);
-}
+void Robot::RobotPeriodic() {}
 
 void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
