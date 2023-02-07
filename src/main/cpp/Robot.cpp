@@ -47,13 +47,30 @@ frc::SwerveModulePosition backRightModulePosition{falconFXToInches(BackRightDriv
 frc::SwerveDriveOdometry<4> odometry{
   kinematics,
   navX.GetRotation2d(),
-  {frontLeftModulePosition, frontRightModulePosition, backLeftModulePosition, backRightModulePosition},
+  {
+    frc::SwerveModulePosition{falconFXToInches(FrontLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontLeftCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{falconFXToInches(FrontRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontRightCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{falconFXToInches(BackLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackLeftCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{falconFXToInches(BackRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackRightCANCoder.GetPosition()})}
+  },
   frc::Pose2d{0_m, 0_m, 0_deg}
   };
 
 void Robot::RobotInit() {}
 
-void Robot::RobotPeriodic() {}
+void Robot::RobotPeriodic() {
+  // Get the rotation of the robot from the gyro.
+  frc::Rotation2d gyroAngle = navX.GetRotation2d();
+
+  // Update the pose
+  auto pose = odometry.Update(gyroAngle,
+  {
+    frc::SwerveModulePosition{falconFXToInches(FrontLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontLeftCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{falconFXToInches(FrontRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontRightCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{falconFXToInches(BackLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackLeftCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{falconFXToInches(BackRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackRightCANCoder.GetPosition()})}
+  });
+}
 
 void Robot::AutonomousInit() {}
 void Robot::AutonomousPeriodic() {}
