@@ -4,6 +4,7 @@
 
 #include "ctre/Phoenix.h"
 #include "frc/XboxController.h"
+#include "AHRS.h"
 
 extern TalonFX FrontLeftDrive;
 extern TalonFX FrontLeftSteering;
@@ -18,5 +19,7 @@ extern CANCoder BackLeftCANCoder;
 extern CANCoder BackRightCANCoder;
 extern CANCoder FrontLeftCANCoder;
 extern CANCoder FrontRightCANCoder;
+
+extern AHRS navX;
 
 extern frc::XboxController Controller;
