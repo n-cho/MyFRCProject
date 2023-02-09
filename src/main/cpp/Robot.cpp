@@ -13,9 +13,32 @@
 #include <frc/geometry/Rotation2d.h>
 #include <units/length.h>
 #include <units/angle.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+
+#include "ctre/Phoenix.h"
+#include "frc/XboxController.h"
+#include "AHRS.h"
 
 #include <Robot.h>
 #include <DeviceManager.h>
+
+TalonFX FrontLeftDrive{kFrontLeftDriveID};
+TalonFX FrontLeftSteering{kFrontLeftSteeringID};
+TalonFX FrontRightDrive{kFrontRightDriveID};
+TalonFX FrontRightSteering{kFrontRightSteeringID};
+TalonFX BackLeftDrive{kBackLeftDriveID};
+TalonFX BackLeftSteering{kBackLeftSteeringID};
+TalonFX BackRightDrive{kBackRightDriveID};
+TalonFX BackRightSteering{kBackRightSteeringID};
+
+CANCoder BackLeftCANCoder{kBackLeftCANCoderID};
+CANCoder BackRightCANCoder{kBackRightCANCoderID};
+CANCoder FrontLeftCANCoder{kFrontLeftCANCoderID};
+CANCoder FrontRightCANCoder{kFrontRightCANCoderID};
+
+AHRS navX{frc::SPI::kMXP};
+
+frc::XboxController Controller{kControllerID};
 
 // Locations for the swerve drive modules relative to the robot center.
 // Positive x values represent moving toward the front of the robot whereas positive y values represent moving toward the left of the robot.
@@ -70,6 +93,8 @@ void Robot::RobotPeriodic() {
     frc::SwerveModulePosition{falconFXToInches(BackLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackLeftCANCoder.GetPosition()})}, 
     frc::SwerveModulePosition{falconFXToInches(BackRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackRightCANCoder.GetPosition()})}
   });
+  frc::SmartDashboard::PutNumber("X ", pose.X().value());
+  frc::SmartDashboard::PutNumber("Y ", pose.Y().value());
 }
 
 void Robot::AutonomousInit() {}
@@ -88,7 +113,8 @@ void Robot::SimulationInit() {}
 void Robot::SimulationPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS
-int main() {
-  return frc::StartRobot<Robot>();
+int main()
+{
+    return frc::StartRobot<Robot>();
 }
 #endif

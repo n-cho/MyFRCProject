@@ -2,24 +2,18 @@
 // Created by Nathan Cho on 2023-02-04.
 //
 
-#include "ctre/Phoenix.h"
-#include "frc/XboxController.h"
-#include "AHRS.h"
+const int kFrontLeftDriveID = 3;
+const int kFrontLeftSteeringID = 7;
+const int kFrontRightDriveID = 1;
+const int kFrontRightSteeringID = 5;
+const int kBackRightDriveID = 4;
+const int kBackRightSteeringID = 8;
+const int kBackLeftDriveID = 2;
+const int kBackLeftSteeringID = 6;
 
-TalonFX FrontLeftDrive = 3;
-TalonFX FrontLeftSteering = 7;
-TalonFX FrontRightDrive = 1;
-TalonFX FrontRightSteering = 5;
-TalonFX BackRightDrive = 4;
-TalonFX BackRightSteering = 8;
-TalonFX BackLeftDrive = 2;
-TalonFX BackLeftSteering = 6;
+const int kBackLeftCANCoderID = 10;
+const int kBackRightCANCoderID = 12;
+const int kFrontLeftCANCoderID = 11;
+const int kFrontRightCANCoderID = 9;
 
-CANCoder BackLeftCANCoder = 10;
-CANCoder BackRightCANCoder = 12;
-CANCoder FrontLeftCANCoder = 11;
-CANCoder FrontRightCANCoder = 9;
-
-AHRS navX{frc::SPI::kMXP};
-
-frc::XboxController Controller = frc::XboxController(0);
+const int kControllerID = 0;

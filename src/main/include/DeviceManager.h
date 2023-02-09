@@ -2,24 +2,18 @@
 // Created by Nathan Cho on 2023-02-04.
 //
 
-#include "ctre/Phoenix.h"
-#include "frc/XboxController.h"
-#include "AHRS.h"
+extern const int kFrontLeftDriveID = 3;
+extern const int kFrontLeftSteeringID = 7;
+extern const int kFrontRightDriveID = 1;
+extern const int kFrontRightSteeringID = 5;
+extern const int kBackRightDriveID = 4;
+extern const int kBackRightSteeringID = 8;
+extern const int kBackLeftDriveID = 2;
+extern const int kBackLeftSteeringID = 6;
 
-extern TalonFX FrontLeftDrive;
-extern TalonFX FrontLeftSteering;
-extern TalonFX FrontRightDrive;
-extern TalonFX FrontRightSteering;
-extern TalonFX BackRightDrive;
-extern TalonFX BackRightSteering;
-extern TalonFX BackLeftDrive;
-extern TalonFX BackLeftSteering;
+extern const int kBackLeftCANCoderID = 10;
+extern const int kBackRightCANCoderID = 12;
+extern const int kFrontLeftCANCoderID = 11;
+extern const int kFrontRightCANCoderID = 9;
 
-extern CANCoder BackLeftCANCoder;
-extern CANCoder BackRightCANCoder;
-extern CANCoder FrontLeftCANCoder;
-extern CANCoder FrontRightCANCoder;
-
-extern AHRS navX;
-
-extern frc::XboxController Controller;
+extern const int kControllerID = 0;
