@@ -22,47 +22,42 @@
 #include <Robot.h>
 #include <DeviceManager.h>
 
-TalonFX FrontLeftDrive{kFrontLeftDriveID};
-TalonFX FrontLeftSteering{kFrontLeftSteeringID};
-TalonFX FrontRightDrive{kFrontRightDriveID};
-TalonFX FrontRightSteering{kFrontRightSteeringID};
-TalonFX BackLeftDrive{kBackLeftDriveID};
-TalonFX BackLeftSteering{kBackLeftSteeringID};
-TalonFX BackRightDrive{kBackRightDriveID};
-TalonFX BackRightSteering{kBackRightSteeringID};
+TalonFX FLDrive{kFLDriveID};
+TalonFX FLSteering{kFLSteeringID};
+TalonFX FRDrive{kFRDriveID};
+TalonFX FRSteering{kFRSteeringID};
+TalonFX BLDrive{kBLDriveID};
+TalonFX BLSteering{kBLSteeringID};
+TalonFX BRDrive{kBRDriveID};
+TalonFX BRSteering{kBRSteeringID};
 
-CANCoder BackLeftCANCoder{kBackLeftCANCoderID};
-CANCoder BackRightCANCoder{kBackRightCANCoderID};
-CANCoder FrontLeftCANCoder{kFrontLeftCANCoderID};
-CANCoder FrontRightCANCoder{kFrontRightCANCoderID};
+CANCoder BLCANCoder{kBLCANCoderID};
+CANCoder BRCANCoder{kBRCANCoderID};
+CANCoder FLCANCoder{kFLCANCoderID};
+CANCoder FRCANCoder{kFRCANCoderID};
 
 AHRS navX{frc::SPI::kMXP};
 
-frc::XboxController Controller{kControllerID};
+frc::XboxController controller{kControllerID};
 
 // Locations for the swerve drive modules relative to the robot center.
 // Positive x values represent moving toward the front of the robot whereas positive y values represent moving toward the left of the robot.
-const frc::Translation2d kFrontLeftLocationFromCenter{11.625_in, 7.25_in};
-const frc::Translation2d kFrontRightLocationFromCenter{11.625_in, -7.25_in};
-const frc::Translation2d kBackLeftLocationFromCenter{-11.625_in, 7.25_in};
-const frc::Translation2d kBackRightLocationFromCenter{-11.625_in, -7.25_in};
+const frc::Translation2d kFLLocationFromCenter{11.625_in, 7.25_in};
+const frc::Translation2d kFRLocationFromCenter{11.625_in, -7.25_in};
+const frc::Translation2d kBLLocationFromCenter{-11.625_in, 7.25_in};
+const frc::Translation2d kBRLocationFromCenter{-11.625_in, -7.25_in};
 
 // Creating my kinematics object using the module locations.
 frc::SwerveDriveKinematics<4> kinematics{
-  kFrontLeftLocationFromCenter, 
-  kFrontRightLocationFromCenter,
-  kBackLeftLocationFromCenter, 
-  kBackRightLocationFromCenter
+  kFLLocationFromCenter, 
+  kFRLocationFromCenter,
+  kBLLocationFromCenter, 
+  kBRLocationFromCenter
 };
 
-units::length::inch_t falconFXToInches(double selectedSensorPosition) {
+units::length::inch_t TalonFXToInches(double selectedSensorPosition) {
   return units::length::inch_t{(selectedSensorPosition * 4 * M_PI) / 180};
 }
-
-frc::SwerveModulePosition frontLeftModulePosition{falconFXToInches(FrontLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontLeftCANCoder.GetPosition()})};
-frc::SwerveModulePosition frontRightModulePosition{falconFXToInches(FrontRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontRightCANCoder.GetPosition()})};
-frc::SwerveModulePosition backLeftModulePosition{falconFXToInches(BackLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackLeftCANCoder.GetPosition()})};
-frc::SwerveModulePosition backRightModulePosition{falconFXToInches(BackRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackRightCANCoder.GetPosition()})};
 
 // Creating my odometry object from the kinematics object. Here,
 // our starting pose is 5 meters along the long end of the field and in the
@@ -71,13 +66,13 @@ frc::SwerveDriveOdometry<4> odometry{
   kinematics,
   navX.GetRotation2d(),
   {
-    frc::SwerveModulePosition{falconFXToInches(FrontLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontLeftCANCoder.GetPosition()})}, 
-    frc::SwerveModulePosition{falconFXToInches(FrontRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontRightCANCoder.GetPosition()})}, 
-    frc::SwerveModulePosition{falconFXToInches(BackLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackLeftCANCoder.GetPosition()})}, 
-    frc::SwerveModulePosition{falconFXToInches(BackRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackRightCANCoder.GetPosition()})}
+    frc::SwerveModulePosition{TalonFXToInches(FLDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FLCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{TalonFXToInches(FRDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FRCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{TalonFXToInches(BLDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BLCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{TalonFXToInches(BRDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BRCANCoder.GetPosition()})}
   },
   frc::Pose2d{0_m, 0_m, 0_deg}
-  };
+};
 
 void Robot::RobotInit() {}
 
@@ -88,10 +83,10 @@ void Robot::RobotPeriodic() {
   // Update the pose
   auto pose = odometry.Update(gyroAngle,
   {
-    frc::SwerveModulePosition{falconFXToInches(FrontLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontLeftCANCoder.GetPosition()})}, 
-    frc::SwerveModulePosition{falconFXToInches(FrontRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FrontRightCANCoder.GetPosition()})}, 
-    frc::SwerveModulePosition{falconFXToInches(BackLeftDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackLeftCANCoder.GetPosition()})}, 
-    frc::SwerveModulePosition{falconFXToInches(BackRightDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BackRightCANCoder.GetPosition()})}
+    frc::SwerveModulePosition{TalonFXToInches(FLDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FLCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{TalonFXToInches(FRDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FRCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{TalonFXToInches(BLDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BLCANCoder.GetPosition()})}, 
+    frc::SwerveModulePosition{TalonFXToInches(BRDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BRCANCoder.GetPosition()})}
   });
   frc::SmartDashboard::PutNumber("X ", pose.X().value());
   frc::SmartDashboard::PutNumber("Y ", pose.Y().value());
