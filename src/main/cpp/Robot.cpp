@@ -47,7 +47,7 @@ const frc::Translation2d kFRLocationFromCenter{11.625_in, -7.25_in};
 const frc::Translation2d kBLLocationFromCenter{-11.625_in, 7.25_in};
 const frc::Translation2d kBRLocationFromCenter{-11.625_in, -7.25_in};
 
-// Creating my kinematics object using the module locations.
+// Creating kinematics object using the module locations.
 frc::SwerveDriveKinematics<4> kinematics{
   kFLLocationFromCenter, 
   kFRLocationFromCenter,
@@ -55,13 +55,12 @@ frc::SwerveDriveKinematics<4> kinematics{
   kBRLocationFromCenter
 };
 
+// Convert SelectedSensorPosition (degrees) to Inches.
 units::length::inch_t TalonFXToInches(double selectedSensorPosition) {
   return units::length::inch_t{(selectedSensorPosition * 4 * M_PI) / 180};
 }
 
-// Creating my odometry object from the kinematics object. Here,
-// our starting pose is 5 meters along the long end of the field and in the
-// center of the field along the short end, facing forward.
+// Creating odometry object from the kinematics object, navX rotation, swerve module positions.
 frc::SwerveDriveOdometry<4> odometry{
   kinematics,
   navX.GetRotation2d(),
@@ -78,18 +77,21 @@ void Robot::RobotInit() {}
 
 void Robot::RobotPeriodic() {
   // Get the rotation of the robot from the gyro.
-  frc::Rotation2d gyroAngle = navX.GetRotation2d();
+  frc::Rotation2d rotation = navX.GetRotation2d();
 
-  // Update the pose
-  auto pose = odometry.Update(gyroAngle,
+  // Update the pose.
+  auto pose = odometry.Update(rotation,
   {
     frc::SwerveModulePosition{TalonFXToInches(FLDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FLCANCoder.GetPosition()})}, 
     frc::SwerveModulePosition{TalonFXToInches(FRDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{FRCANCoder.GetPosition()})}, 
     frc::SwerveModulePosition{TalonFXToInches(BLDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BLCANCoder.GetPosition()})}, 
     frc::SwerveModulePosition{TalonFXToInches(BRDrive.GetSelectedSensorPosition()), frc::Rotation2d(units::angle::degree_t{BRCANCoder.GetPosition()})}
   });
+
+  // Display pose and rotation on SmartDashboard.
   frc::SmartDashboard::PutNumber("X ", pose.X().value());
   frc::SmartDashboard::PutNumber("Y ", pose.Y().value());
+  frc::SmartDashboard::PutNumber("theta ", rotation.Degrees().value());
 }
 
 void Robot::AutonomousInit() {}
